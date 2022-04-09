@@ -47,7 +47,7 @@ router.post('/', (req, res) => {
 
         try {
             const media = await Media.create({
-                image: `/images/${filename}`,
+                image: `images/${filename}`,
             });
 
             return res.json({
