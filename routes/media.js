@@ -4,6 +4,26 @@ const isBase64 = require('is-base64');
 const base64Img = require('base64-img');
 const { Media } = require('../models');
 
+router.get('/', async (req, res) => {
+    try {
+        const media = await Media.findAll({
+            attributes: ['id', 'image'],
+        });
+
+        const mappedMedia = media.map((m) => {
+            m.image = `${req.get('host')}/${m.image}`;
+            return m;
+        });
+
+        return res.status(200).json({
+            status: 'success',
+            data: mappedMedia,
+        });
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+
 router.post('/', (req, res) => {
     const image = req.body.image;
 
